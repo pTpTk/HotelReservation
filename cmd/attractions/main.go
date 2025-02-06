@@ -19,7 +19,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	"../services/attractions"
+	"github.com/pTpTk/HotelReservation/cmd/services/attractions"
 	// "github.com/bradfitz/gomemcache/memcache"
 )
 
