@@ -15,11 +15,15 @@ import (
 	// "github.com/rs/zerolog"
 	// "github.com/rs/zerolog/log"
 
+	"net/http"
+
 	"log"
 	"time"
-
+	
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/pTpTk/HotelReservation/cmd/services/attractions"
+	"github.com/aws/aws-lambda-go/event"
+
+	// "github.com/pTpTk/HotelReservation/cmd/services/attractions"
 	// "github.com/bradfitz/gomemcache/memcache"
 )
 
@@ -95,4 +99,11 @@ func main() {
 
 	log.Println("Starting service...")
 	lambda.Start(handler)
+}
+
+func handler(req events.APIGatewayProxyRequest) (event.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{
+		StatusCode: http.StatusOK,
+		Body:	"service under construction"
+	}, nil
 }
