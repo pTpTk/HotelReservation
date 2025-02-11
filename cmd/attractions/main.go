@@ -2,22 +2,14 @@ package main
 
 import (
 
-	// "github.com/delimitrou/DeathStarBench/tree/master/hotelReservation/registry"
-	// "github.com/delimitrou/DeathStarBench/tree/master/hotelReservation/services/attractions"
-	// "github.com/delimitrou/DeathStarBench/tree/master/hotelReservation/tracing"
-	// "github.com/delimitrou/DeathStarBench/tree/master/hotelReservation/tune"
-
-	// "github.com/rs/zerolog"
-	// "github.com/rs/zerolog/log"
-
 	"log"
+	"context"
 	"net/http"
+	"encoding/json"
 	
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-lambda-go/events"
 
-	// "github.com/pTpTk/HotelReservation/cmd/services/attractions"
-	// "github.com/bradfitz/gomemcache/memcache"
 )
 
 func main() {
@@ -25,7 +17,37 @@ func main() {
 	lambda.Start(handler)
 }
 
-func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+// The go equivalent of enum
+type RequestType int
+
+const (
+	NearbyRest RequestType = iota
+	NearbyMus
+	NearbyCinema
+)
+
+type AttractionsRequest struct {
+	requestType RequestType `json:"request_type"`
+	hotelId string `json:"hotel_id"`
+}
+
+func handler(ctx context.Context, event json.RawMessage) (events.APIGatewayProxyResponse, error) {
+	var attrReq AttractionsRequest
+	if err := json.Unmarshal(event, &attrReq); err != nil {
+		log.Printf("Failed to unmarshal event: %v", err)
+		return events.APIGatewayProxyResponse{}, nil
+	}
+
+	switch attrReq.requestType {
+		case NearbyRest:
+			log.Println("Recieved NearbyRest request")
+		case NearbyMus:
+			log.Println("Recieved NearbyMus request")
+		case NearbyCinema:
+			log.Println("Recieved NearbyCinema request")
+		default:
+			log.Printf("unknown req type: %d", attrReq.requestType)
+	}
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Body: "service under construction",
