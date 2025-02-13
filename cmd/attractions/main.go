@@ -4,11 +4,10 @@ import (
 
 	"log"
 	"context"
-	"net/http"
+	"fmt"
 	"encoding/json"
 	
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/aws/aws-lambda-go/events"
 
 )
 
@@ -21,9 +20,9 @@ func main() {
 type RequestType int
 
 const (
-	NearbyRest RequestType = iota
-	NearbyMus
-	NearbyCinema
+	Rest RequestType = iota
+	Mus
+	Cinema
 )
 
 type AttractionsRequest struct {
@@ -31,25 +30,24 @@ type AttractionsRequest struct {
 	hotelId string `json:"hotel_id"`
 }
 
-func handler(ctx context.Context, event json.RawMessage) (events.APIGatewayProxyResponse, error) {
+func handler(ctx context.Context, event json.RawMessage) ([]string, error) {
 	var attrReq AttractionsRequest
 	if err := json.Unmarshal(event, &attrReq); err != nil {
 		log.Printf("Failed to unmarshal event: %v", err)
-		return events.APIGatewayProxyResponse{}, nil
+		return nil, err
 	}
 
 	switch attrReq.requestType {
-		case NearbyRest:
+		case Rest:
 			log.Println("Recieved NearbyRest request")
-		case NearbyMus:
+			return NearbyRest(ctx, &attrReq)
+		case Mus:
 			log.Println("Recieved NearbyMus request")
-		case NearbyCinema:
+			return NearbyMus(ctx, &attrReq)
+		case Cinema:
 			log.Println("Recieved NearbyCinema request")
+			return NearbyCinema(ctx, &attrReq)
 		default:
-			log.Printf("unknown req type: %d", attrReq.requestType)
+			return nil, fmt.Errorf("unknown req type: %d", attrReq.requestType)
 	}
-	return events.APIGatewayProxyResponse{
-		StatusCode: http.StatusOK,
-		Body: "service under construction",
-	}, nil
 }
