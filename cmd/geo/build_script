@@ -1,0 +1,7 @@
+GOOS=linux GOARCH=amd64 go build -o bootstrap .
+
+zip geo.zip bootstrap
+
+aws lambda create-function --function-name geo --runtime provided.al2023 --handler bootstrap --role arn:aws:iam::356764711652:role/aes-go-lambda-role --zip-file fileb://geo.zip
+
+aws lambda update-function-code --function-name geo --zip-file fileb://geo.zip
