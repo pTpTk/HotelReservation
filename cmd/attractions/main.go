@@ -5,7 +5,6 @@ import (
 	"log"
 	"context"
 	"fmt"
-	"encoding/json"
 	
 	"github.com/aws/aws-lambda-go/lambda"
 
@@ -26,28 +25,27 @@ const (
 )
 
 type AttractionsRequest struct {
-	requestType RequestType `json:"request_type"`
-	hotelId string `json:"hotel_id"`
+	RequestType RequestType
+	HotelID     string
 }
 
-func handler(ctx context.Context, event json.RawMessage) ([]string, error) {
-	var attrReq AttractionsRequest
-	if err := json.Unmarshal(event, &attrReq); err != nil {
-		log.Printf("Failed to unmarshal event: %v", err)
-		return nil, err
-	}
+type AttractionsResponse struct {
+	AttractionIDs []string
+}
 
-	switch attrReq.requestType {
+func handler(ctx context.Context, req AttractionsRequest) (AttractionsResponse, error) {
+
+	switch req.RequestType {
 		case Rest:
 			log.Println("Recieved NearbyRest request")
-			return NearbyRest(ctx, &attrReq)
+			return NearbyRest(ctx, &req)
 		case Mus:
 			log.Println("Recieved NearbyMus request")
-			return NearbyMus(ctx, &attrReq)
+			return NearbyMus(ctx, &req)
 		case Cinema:
 			log.Println("Recieved NearbyCinema request")
-			return NearbyCinema(ctx, &attrReq)
+			return NearbyCinema(ctx, &req)
 		default:
-			return nil, fmt.Errorf("unknown req type: %d", attrReq.requestType)
+			return AttractionsResponse{}, fmt.Errorf("unknown req type: %d", req.RequestType)
 	}
 }
