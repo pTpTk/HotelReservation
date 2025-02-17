@@ -1,0 +1,7 @@
+GOOS=linux GOARCH=amd64 go build -o bootstrap .
+
+zip recommendation.zip bootstrap
+
+aws lambda create-function --function-name recommendation --runtime provided.al2023 --handler bootstrap --role arn:aws:iam::356764711652:role/aes-go-lambda-role --zip-file fileb://recommendation.zip
+
+aws lambda update-function-code --function-name recommendation --zip-file fileb://recommendation.zip
