@@ -1,0 +1,37 @@
+GET http://localhost:5000/hotels?inDate=2015-04-16&outDate=2015-04-21&lat=38.065&lon=-121.965 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/hotels?inDate=2015-04-17&outDate=2015-04-18&lat=38.188&lon=-122.087 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/recommendations?require=dis&lat=38.025&lon=-122.074 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/hotels?inDate=2015-04-13&outDate=2015-04-22&lat=38.213&lon=-122.042 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/hotels?inDate=2015-04-21&outDate=2015-04-24&lat=38.161&lon=-121.953 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/recommendations?require=rate&lat=37.984&lon=-122.006 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/recommendations?require=dis&lat=38.222&lon=-122.094 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/recommendations?require=dis&lat=37.839&lon=-121.947 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+GET http://localhost:5000/recommendations?require=rate&lat=37.912&lon=-122.013 HTTP/1.1
+Host: 127.0.0.1:6000
+
+
+
